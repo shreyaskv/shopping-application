@@ -31,6 +31,8 @@ const styles = theme => ({
 class CheckOut extends Component{
     state = {
         finalOrder : [],
+        ttl: 0,
+        start: false,
     }
     
     setOrd = () => {
@@ -40,9 +42,10 @@ class CheckOut extends Component{
         {
             total = total + this.props.order[i].price;
         }
-        var total1 = "Your order of Rs." + total + "has been placed";
+        var total1 = "Your order of Rs." + total + " has been placed by " + this.props.number + '.';
         var tot = JSON.stringify({"text": total1});
 
+        if(total > 200){
         fetch('http://localhost:4500/sendSMS', {
             method: 'post',
             headers: {
@@ -51,46 +54,70 @@ class CheckOut extends Component{
             },
             body: tot,
           })
-          .then(function(res){ console.log(res) })
+          .then(function(res){ console.log(res); alert("order placed"); })
           .catch(function(error){ console.log(error)});
+        }
+
+        else{
+            alert("Minimum Order Value is 200");
+        }
+    }
+
+    componentDidMount(){
+        var total = 0;
+        for(var i=0; i<this.props.order.length; i++)
+        {
+            total = total + this.props.order[i].price;
+        }
+        this.setState({ttl: total, start : true});
+
     }
 
     render(){
         const {classes} = this.props;
+
         return(
             <div>
-                <TopBar comp="CheckOut" />
-            <div>
-                <center>
-                {this.props.set1 === true && 
-                            <Table>
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell  align="left">Name</TableCell>
-                                  <TableCell  align="left">Quantity</TableCell>
-                                  <TableCell align="right" >Price</TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                {this.props.order.map(row => (
-                                  <TableRow key={row.id}>
-                                    <TableCell  align="left">{row.name}</TableCell>
-                                    <TableCell align="left">{row.quantity}</TableCell>
-                                    <TableCell component="th" scope="row" align="right">
-                                      {row.price}
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                }
-
-                
-                    <Fab size="medium" color="secondary" aria-label="Add" className={classes.margin} onClick={this.setOrd}>
-                        Place Order
-                    </Fab>
+                {this.state.start === true &&
+                <div>
+                    <TopBar comp="CheckOut" />
+                <div>
+                    <center>
+                    {this.props.set1 === true && 
+                                <Table>
+                                <TableHead>
+                                    <TableRow>
+                                    <TableCell  align="left">Name</TableCell>
+                                    <TableCell  align="left">Quantity</TableCell>
+                                    <TableCell align="right" >Price</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.props.order.map(row => (
+                                    <TableRow key={row.id}>
+                                        <TableCell  align="left">{row.name}</TableCell>
+                                        <TableCell align="left">{row.quantity}</TableCell>
+                                        <TableCell component="th" scope="row" align="right">
+                                        {row.price}
+                                        </TableCell>
+                                    </TableRow>
+                                    ))}
+                                </TableBody>
+                                </Table>
+                    }
+                    <br />
+                    <center>
+                        Total: {this.state.ttl}
                     </center>
-            </div>
+
+                    
+                        <Fab size="medium" color="secondary" aria-label="Add" className={classes.margin} onClick={this.setOrd}>
+                            Place Order
+                        </Fab>
+                        </center>
+                </div>
+                </div>
+                }
             </div>
         );
     }
@@ -101,10 +128,11 @@ CheckOut.propTypes = {
   };
 
 const mapStateToProps = (state) => {
-    const { set1, order  } = state.menu
+    const { set1, order, number  } = state.menu
     return {
         set1,
         order,
+        number,
     };
   }
   

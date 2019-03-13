@@ -6,9 +6,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import MenuIcon from '@material-ui/icons/Menu';
-import SendIcon from '@material-ui/icons/Send';
+import Backspace from '@material-ui/icons/Backspace';
+import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
-
 
 const styles = {
   root: {
@@ -30,7 +30,8 @@ const styles = {
 };
 
 class TopBar extends React.Component {
-  
+
+
   render(){
   const { classes } = this.props;
 
@@ -41,15 +42,22 @@ class TopBar extends React.Component {
               <Typography variant="h6" color="inherit" className={classes.heading}>
                 <b className={classes.upper}>{this.props.comp}</b>
               </Typography>
+              {this.props.comp === 'CheckOut'? 
+              <Link to='/'>
+                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.back}>
+                        <Backspace />
+                    </IconButton>
+              </Link> : 
               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon />
-            </IconButton>
+            </IconButton>}
           </Toolbar>
         </AppBar>
       </div>
     );
   }
 }
+
 
 TopBar.propTypes = {
   classes: PropTypes.object.isRequired,

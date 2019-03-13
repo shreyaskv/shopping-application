@@ -1,5 +1,6 @@
 export const menuActions = {
-    setOrder
+    setOrder,
+    setDetails,
 };
 
 function setOrder(order) {
@@ -7,4 +8,11 @@ function setOrder(order) {
         dispatch(success(order));
     };
     function success(order) { return { type: "setOrderSuccess", order} }
+}
+
+function setDetails(number, location) {
+    return dispatch => {
+        dispatch(success(number, location));
+    };
+    function success(number, location) { return { type: "setDetailsSuccess", number, location} }
 }
