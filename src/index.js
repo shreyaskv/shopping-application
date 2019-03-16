@@ -6,6 +6,7 @@ import { store } from './_helpers';
 import { HomePage } from './HomePage';
 import './index.css'
 import 'typeface-roboto'
+import * as serviceWorker from './serviceWorker';
 
 const theme = createMuiTheme({
     palette: {
@@ -27,3 +28,5 @@ render(
     </MuiThemeProvider>,
     document.getElementById('root')
 );
+
+serviceWorker.register();

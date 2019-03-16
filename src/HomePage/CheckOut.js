@@ -46,7 +46,7 @@ class CheckOut extends Component{
         var tot = JSON.stringify({"text": total1});
 
         if(total > 200){
-        fetch('http://localhost:4500/sendSMS', {
+        fetch('http://159.89.169.50:4500/sendSMS', {
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
