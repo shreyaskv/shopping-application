@@ -1,3 +1,4 @@
+E commerce application with 1000s of listed products. User auth and payments also
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
